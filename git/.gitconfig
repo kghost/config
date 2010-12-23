@@ -1,0 +1,19 @@
+[user]
+	name = Zang MingJie
+	email = zealot0630@gmail.com
+[core]
+	whitespace = blank-at-eol,space-before-tab,tab-in-indent,blank-at-eof,trailing-space,cr-at-eol
+[color]
+	diff = auto
+	ui = auto
+[pack]
+	packSizeLimit = 2g
+[review "review.cyanogenmod.com"]
+	username = kghost
+[sendemail]
+	smtpencryption = tls
+	smtpserver = smtp.gmail.com
+	smtpuser = zealot0630@gmail.com
+	smtpserverport = 587
+[push]
+	default = simple
