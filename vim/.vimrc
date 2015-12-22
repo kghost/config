@@ -104,10 +104,15 @@ set switchbuf+=newtab "always open new tab
 set scrolloff=3
 set showcmd
 set diffopt+=vertical
+set splitright " Unite split preview to the right
 
 " Unite
-nnoremap S :UniteWithCursorWord grep:/:-w<CR>
-nnoremap F :UniteWithCursorWord grep:.:-w<CR>
+let g:unite_source_grep_max_candidates = 100000
+
+call unite#custom#default_action('jump_list', 'tabopen')
+
+nnoremap S :UniteWithCursorWord -no-quit -no-wrap -no-truncate -vertical-preview -hide-source-names -auto-resize -winheight=10 -max-multi-lines=1 grep/git:/:-w<CR>
+nnoremap X :UniteWithCursorWord -no-quit -no-wrap -no-truncate -vertical-preview -hide-source-names -auto-resize -winheight=10 -max-multi-lines=1 grep:.:-w<CR>
 nnoremap <C-F> :Unite -tab -create -start-insert file_rec/async<CR>
 
 autocmd FileType unite call s:unite_my_settings()
