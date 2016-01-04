@@ -181,21 +181,15 @@ if has("statusline")
 	set statusline+=]
 	set statusline+=%<
 	set statusline+=%=
-	set statusline+=[%-8.8(%{getreg('*')[:7]}%=%<%)]\ 
-	set statusline+=[%-8.8(%{getreg('+')[:7]}%<%=%)]\ 
-	set statusline+=%{fugitive#statusline()}\ 
-	set statusline+=(%04B)\ 
-	set statusline+=[
-	set statusline+=%{&fenc!='utf-8'?&fenc:''}
-	set statusline+=%{&bomb?',B':''}
-	set statusline+=%{&ff=='unix'?'':(','.&ff)}
-	set statusline+=%Y
-	set statusline+=]\ 
+	set statusline+=%l/%L,%c%V
+	set statusline+=\ [%-8.8(%{getreg('*')[:7]}%=%<%)]
+	set statusline+=%(\ %{fugitive#statusline()}%)
+	set statusline+=\ (%04B)
+	set statusline+=%(\ [%{&fenc!='utf-8'?&fenc:''}%{&bomb?',B':''}%{&ff=='unix'?'':(','.&ff)}%Y]%)
 	" syntastic
-	set statusline+=%{SyntasticStatuslineFlag()}
-	set statusline+=\ 
+	set statusline+=%(\ %{SyntasticStatuslineFlag()}%)
 
-	set statusline+=%l/%L,%c%V\ %P
+	set statusline+=\ %P
 endif
 
 function s:JavaScriptFold()
