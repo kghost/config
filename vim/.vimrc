@@ -214,6 +214,8 @@ if has("statusline")
 	autocmd InsertLeave * highlight statusline ctermfg=None
 endif
 
+set cinoptions=+0,j1,(1s " C++11 indent
+
 function s:JavaScriptFold()
 	setl foldmethod=syntax
 	setl foldlevelstart=1
