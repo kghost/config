@@ -1,3 +1,5 @@
+colorscheme default
+
 set nocompatible
 filetype off
 
@@ -105,6 +107,7 @@ set scrolloff=3
 set showcmd
 set diffopt+=vertical
 set splitright " Unite split preview to the right
+set ttimeoutlen=0 " exit visual/insert mode immediately
 
 " Unite
 call unite#custom#default_action('jump_list', 'tabopen')
@@ -136,6 +139,11 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_stl_format = '[%E{E:%fe#%e}%B{,}%W{W:%fw#%w}]'
 let g:syntastic_python_checkers = ['flake8']
+
+inoremap <C-H> <Esc>:tabprevious<CR>
+inoremap <C-L> <Esc>:tabnext<CR>
+inoremap <C-D> <Esc>:quit<CR>
+inoremap <C-S-T> <Esc>:tabnew 
 
 nnoremap <C-H> :tabprevious<CR>
 nnoremap <C-L> :tabnext<CR>
@@ -190,6 +198,20 @@ if has("statusline")
 	set statusline+=%(\ %{SyntasticStatuslineFlag()}%)
 
 	set statusline+=\ %P
+
+	function! InsertStatuslineColor(mode)
+		if a:mode == 'i'
+			highlight statusline ctermfg=blue
+		elseif a:mode == 'r'
+			highlight statusline ctermfg=red
+		else
+			highlight statusline ctermfg=magenta
+		endif
+	endfunction
+
+	autocmd InsertEnter * call InsertStatuslineColor(v:insertmode)
+	autocmd InsertChange * call InsertStatuslineColor(v:insertmode)
+	autocmd InsertLeave * highlight statusline ctermfg=None
 endif
 
 function s:JavaScriptFold()
@@ -226,8 +248,6 @@ let NERDTreeIgnore=['\.pyc','\~$','\.swo$','\.swp$','\.git','\.hg','\.svn','\.bz
 if $TERM == "xterm" || $TERM == "screen"
 	set t_Co=256
 endif
-
-colorscheme default
 
 highlight clear SpellBad
 highlight clear SpellCap
