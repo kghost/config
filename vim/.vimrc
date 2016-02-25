@@ -39,6 +39,8 @@ Plug 'scrooloose/syntastic'
 " Unite
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim'
+
+Plug 'embear/vim-localvimrc'
 call plug#end()
 
 if has("win32")
