@@ -5,10 +5,9 @@ filetype off
 
 call plug#begin('~/.vim/plugged')
 " langs
-Plug 'derekwyatt/vim-scala'
-Plug 'kchmck/vim-coffee-script'
+Plug 'sheerun/vim-polyglot'
+
 Plug 'othree/xml.vim'
-Plug 'vim-ruby/vim-ruby'
 Plug 'jnwhiteh/vim-golang'
 Plug 'vim-scripts/py-coverage'
 
@@ -218,26 +217,14 @@ endif
 
 set cinoptions=+0,j1,(1s " C++11 indent
 
-function s:JavaScriptFold()
-	setl foldmethod=syntax
-	setl foldlevelstart=1
-	syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-
-	function! FoldText()
-		return substitute(getline(v:foldstart), '{.*', '{...}', '')
-	endfunction
-	setl foldtext=FoldText()
-endfunction
-
 " Auto adjust quickfix/location-list window size
 autocmd FileType qf call s:AdjustWindowHeight(2, 5)
 function s:AdjustWindowHeight(minheight, maxheight)
   exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
 
-autocmd FileType javascript call s:JavaScriptFold()
-autocmd FileType javascript setl fen
-autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 tabstop=2 foldmethod=indent
+autocmd FileType ruby setl expandtab shiftwidth=2
+autocmd FileType coffee setl expandtab shiftwidth=2
 autocmd BufNewFile,BufReadPost *.py setl shiftwidth=4 tabstop=4 foldmethod=indent expandtab colorcolumn=80
 autocmd BufNewFile,BufReadPost *.py PyCoverageHighlight
 
