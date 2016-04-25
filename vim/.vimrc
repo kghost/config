@@ -109,6 +109,7 @@ set showcmd
 set diffopt+=vertical
 set splitright " Unite split preview to the right
 set ttimeoutlen=0 " exit visual/insert mode immediately
+set updatetime=500
 
 " Unite
 call unite#custom#default_action('jump_list', 'tabopen')
@@ -124,6 +125,8 @@ function! s:unite_my_settings()
 	nmap <silent><buffer> <C-D> <Plug>(unite_exit)
 	nmap <silent><buffer> <C-H> :tabprevious<CR>
 	nmap <silent><buffer> <C-L> :tabnext<CR>
+	nmap <silent><buffer> <C-D> <Plug>(unite_exit)
+	autocmd CursorHold <buffer> call unite#view#_do_auto_preview()
 endfunction
 
 highlight link uniteStatusNormal StatusLine
