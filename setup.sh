@@ -20,9 +20,10 @@ if [ -d /etc/skel/ ] ; then
 	done
 fi
 
-${MKDIR} -p ~/.ssh
+${MKDIR} -p ~/.ssh/conf.d
 
-${CP} -f authorized_keys ~/.ssh/
+${LN} -sT ${PWD}/ssh/authorized_keys ~/.ssh/authorized_keys
+${LN} -sT ${PWD}/ssh/config ~/.ssh/config
 
 ${LN} -sT ${PWD}/vim/.vimrc ~/.vimrc
 ${LN} -sT ${PWD}/vim/.vim ~/.vim

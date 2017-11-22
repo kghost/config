@@ -194,7 +194,7 @@ if has("statusline")
 	set statusline+=%<
 	set statusline+=%=
 	set statusline+=%l/%L,%c%V
-	set statusline+=\ [%-8.8(%{getreg('*')[:7]}%=%<%)]
+	set statusline+=\ [%-8.8(%{getreg('\"')[:7]}%)]
 	set statusline+=%(\ %{fugitive#statusline()}%)
 	set statusline+=\ (%04B)
 	set statusline+=%(\ [%{&fenc!='utf-8'?&fenc:''}%{&bomb?',B':''}%{&ff=='unix'?'':(','.&ff)}%Y]%)

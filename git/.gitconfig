@@ -17,3 +17,7 @@
 	smtpserverport = 587
 [push]
 	default = simple
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
