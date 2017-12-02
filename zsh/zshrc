@@ -54,3 +54,12 @@ if [ -d "/home/kghost/.nvm" ] ; then
 	export NVM_DIR="/home/kghost/.nvm"
 	[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 fi
+
+if [ ! -n "$SSH_AUTH_SOCK" ] ; then
+	export SSH_AUTH_SOCK="/tmp/ssh-agent.$USER.socket"
+	ssh-add -l >/dev/null 2>/dev/null
+	if [ "$?" -eq 2 ] ; then
+		rm -f "$SSH_AUTH_SOCK"
+		ssh-agent -a "$SSH_AUTH_SOCK" > /dev/null
+	fi
+fi
