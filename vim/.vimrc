@@ -173,6 +173,10 @@ nnoremap <Plug>IgnoreMarkSearchPrev <Plug>MarkSearchPrev
 nnoremap <Plug>IgnoreMarkSearchCurrentNext <Plug>MarkSearchCurrentNext
 nnoremap <Plug>IgnoreMarkSearchCurrentPrev <Plug>MarkSearchCurrentPrev
 
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
+
 if has("win32")
 else
 	cmap w!! w !sudo tee >/dev/null %
