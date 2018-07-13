@@ -122,11 +122,10 @@ nnoremap <C-F> :Unite -tab -create -start-insert file_rec/async<CR>
 
 autocmd FileType unite call s:unite_my_settings()
 function! s:unite_my_settings()
-	nmap <silent><buffer> <C-D> <Plug>(unite_exit)
 	nmap <silent><buffer> <C-H> :tabprevious<CR>
 	nmap <silent><buffer> <C-L> :tabnext<CR>
 	nmap <silent><buffer> <C-D> <Plug>(unite_exit)
-	autocmd CursorHold <buffer> call unite#view#_do_auto_preview()
+	autocmd CursorHold <buffer> nested call unite#view#_do_auto_preview()
 endfunction
 
 highlight link uniteStatusNormal StatusLine
@@ -191,20 +190,18 @@ set laststatus=2
 if has("statusline")
 	set statusline=%f
 	set statusline+=[
-	set statusline+=%M
-	set statusline+=%R
+	set statusline+=%M%R%W
 	set statusline+=%{(&paste?',P':'')}
 	set statusline+=]
 	set statusline+=%<
 	set statusline+=%=
-	set statusline+=%l/%L,%c%V
-	set statusline+=\ [%-8.8(%{getreg('\"')[:7]}%)]
+	set statusline+=[%-8.8(%{getreg('\"')[:7]}%)]
 	set statusline+=%(\ %{fugitive#statusline()}%)
 	set statusline+=\ (%04B)
 	set statusline+=%(\ [%{&fenc!='utf-8'?&fenc:''}%{&bomb?',B':''}%{&ff=='unix'?'':(','.&ff)}%Y]%)
 	" syntastic
 	set statusline+=%(\ %{SyntasticStatuslineFlag()}%)
-
+	set statusline+=\ %l/%L,%c%V
 	set statusline+=\ %P
 
 	function! InsertStatuslineColor(mode)
