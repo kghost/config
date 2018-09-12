@@ -82,6 +82,7 @@ set number
 set autoread
 set directory-=. " don't create .swp in current dir
 set spell
+set spelllang=en
 set hlsearch
 set showmatch
 set incsearch
