@@ -3,6 +3,7 @@
 	email = zealot0630@gmail.com
 [core]
 	whitespace = blank-at-eol,space-before-tab,tab-in-indent,blank-at-eof,trailing-space,cr-at-eol
+	autocrlf = true
 [color]
 	diff = auto
 	ui = auto

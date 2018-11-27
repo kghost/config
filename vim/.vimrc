@@ -245,6 +245,8 @@ if $TERM == "xterm" || $TERM == "screen"
 	set t_Co=256
 endif
 
+highlight Search ctermbg=227
+
 highlight clear SpellBad
 highlight clear SpellCap
 highlight clear SpellLocal
