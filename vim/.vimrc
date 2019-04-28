@@ -20,7 +20,7 @@ Plug 'sjl/gundo.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
-Plug 'vim-scripts/DirDiff.vim'
+Plug 'will133/vim-dirdiff'
 Plug 'ConradIrwin/vim-bracketed-paste'
 
 Plug 'vim-scripts/ingo-library'
