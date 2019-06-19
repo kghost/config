@@ -1,6 +1,6 @@
 #! /bin/bash
 
-sudo aptitude install vim bash-completion
+sudo aptitude install -y vim bash-completion
 
 if [ `uname` == 'Darwin' ] ; then
 	LN=gln
@@ -38,7 +38,7 @@ ${LN} -sT ${PWD}/zsh/oh-my-zsh ~/.oh-my-zsh
 
 ${LN} -sT ${PWD}/.screenrc ~/.screenrc
 
-git submodule update --init
-git submodule sync
+#git submodule update --init
+#git submodule sync
 
 vim +PlugInstall +PlugClean! +VimProcInstall +qall
