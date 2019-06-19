@@ -41,4 +41,4 @@ ${LN} -sT ${PWD}/.screenrc ~/.screenrc
 #git submodule update --init
 #git submodule sync
 
-vim +PlugInstall +PlugClean! +VimProcInstall +qall
+vim +'PlugInstall --sync' +qall
