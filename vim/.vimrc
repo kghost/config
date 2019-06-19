@@ -14,11 +14,13 @@ Plug 'vim-scripts/py-coverage'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'guns/xterm-color-table.vim'
-Plug 'sjl/gundo.vim'
+Plug 'mbbill/undotree'
+"Plug 'sjl/gundo.vim'
 
 " Git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
+Plug 'knsh14/vim-github-link'
 
 Plug 'will133/vim-dirdiff'
 Plug 'ConradIrwin/vim-bracketed-paste'
@@ -37,6 +39,8 @@ Plug 'scrooloose/syntastic'
 
 " Unite
 Plug 'Shougo/unite.vim'
+Plug 'Shougo/unite-outline'
+Plug 'tsukkee/unite-tag'
 Plug 'Shougo/vimproc.vim'
 
 Plug 'embear/vim-localvimrc'
@@ -119,6 +123,8 @@ call unite#custom#source('grep', 'max_candidates', 0)
 
 nnoremap S :UniteWithCursorWord -no-quit -no-wrap -no-truncate -vertical-preview -hide-source-names -auto-resize -winheight=10 -max-multi-lines=1 grep/git:/:-w<CR>
 nnoremap X :UniteWithCursorWord -no-quit -no-wrap -no-truncate -vertical-preview -hide-source-names -auto-resize -winheight=10 -max-multi-lines=1 grep:.:-w<CR>
+nnoremap <C-]> :UniteWithCursorWord -no-quit -no-wrap -no-truncate -vertical-preview -hide-source-names -auto-resize -winheight=10 -max-multi-lines=1 -immediately tag<CR>
+nnoremap <C-O> :Unite -no-quit -no-wrap -no-truncate -vertical-preview -hide-source-names -auto-resize -winheight=10 -max-multi-lines=1 outline<CR>
 nnoremap <C-F> :Unite -tab -create -start-insert file_rec/async<CR>
 
 autocmd FileType unite call s:unite_my_settings()
@@ -163,9 +169,10 @@ nnoremap <C-K> :lprevious<CR>
 nnoremap ; :pop<CR>
 nnoremap ' :tag<CR>
 
-nnoremap <C-]> g<C-]>
+" nnoremap <C-]> g<C-]>
 
 nnoremap <F8> :TagbarToggle<CR>
+nnoremap <C-U> :UndotreeToggle<CR>
 
 " disable mark mappings
 nnoremap <Plug>IgnoreMarkSearchNext <Plug>MarkSearchNext
