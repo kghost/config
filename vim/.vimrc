@@ -1,4 +1,5 @@
 colorscheme default
+set background=light
 
 set nocompatible
 filetype off
@@ -37,11 +38,12 @@ Plug 'honza/vim-snippets'
 " syntastic
 Plug 'scrooloose/syntastic'
 
-" Unite
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/unite-outline'
-Plug 'tsukkee/unite-tag'
-Plug 'Shougo/vimproc.vim'
+" Denite
+Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'roxma/nvim-yarp'
+Plug 'Shougo/denite.nvim'
+Plug 'kghost/denite-grep-git'
+Plug 'kghost/denite-filter-equal'
 
 Plug 'embear/vim-localvimrc'
 call plug#end()
@@ -116,31 +118,31 @@ set splitright " Unite split preview to the right
 set ttimeoutlen=0 " exit visual/insert mode immediately
 set updatetime=500
 
-" Unite
-call unite#custom#default_action('jump_list', 'tabopen')
-call unite#custom#source('grep/git', 'max_candidates', 0)
-call unite#custom#source('grep', 'max_candidates', 0)
+" Denite
+autocmd VimEnter * if !exists('t:denite_buffer_name') | let t:denite_buffer_name = localtime() | endif
+autocmd TabNew * if !exists('t:denite_buffer_name') | let t:denite_buffer_name = localtime() | endif
 
-nnoremap S :UniteWithCursorWord -no-quit -no-wrap -no-truncate -vertical-preview -hide-source-names -auto-resize -winheight=10 -max-multi-lines=1 grep/git:/:-w<CR>
-nnoremap X :UniteWithCursorWord -no-quit -no-wrap -no-truncate -vertical-preview -hide-source-names -auto-resize -winheight=10 -max-multi-lines=1 grep:.:-w<CR>
-nnoremap <C-]> :UniteWithCursorWord -no-quit -no-wrap -no-truncate -vertical-preview -hide-source-names -auto-resize -winheight=10 -max-multi-lines=1 -immediately tag<CR>
-nnoremap <C-O> :Unite -no-quit -no-wrap -no-truncate -vertical-preview -hide-source-names -auto-resize -winheight=10 -max-multi-lines=1 outline<CR>
-nnoremap <C-F> :Unite -tab -create -start-insert file_rec/async<CR>
+call denite#custom#source('tag', 'matchers', ['matcher/equal'])
+call denite#custom#option('_', 'vertical_preview', v:true)
+call denite#custom#option('_', 'source_names', 'short')
+call denite#custom#option('_', 'auto_resize', v:true)
+call denite#custom#option('_', 'winheight', 10)
+call denite#custom#option('_', 'auto_action', 'preview')
+call denite#custom#option('_', 'default_action', 'tabopen')
 
-autocmd FileType unite call s:unite_my_settings()
-function! s:unite_my_settings()
-	nmap <silent><buffer> <C-H> :tabprevious<CR>
-	nmap <silent><buffer> <C-L> :tabnext<CR>
-	nmap <silent><buffer> <C-D> <Plug>(unite_exit)
-	autocmd CursorHold <buffer> nested call unite#view#_do_auto_preview()
+nnoremap <expr> S ':DeniteCursorWord -buffer-name='.expand(t:denite_buffer_name).' grep/git::-w<CR>'
+nnoremap <expr> F ':Denite -buffer-name='.expand(t:denite_buffer_name).' grep/git::-w<CR>'
+nnoremap <expr> X ':DeniteCursorWord -buffer-name='.expand(t:denite_buffer_name).' grep::-w<CR>'
+nnoremap <expr> <C-I> ':DeniteCursorWord -buffer-name='.expand(t:denite_buffer_name).' -immediately-1 tag<CR>'
+nnoremap <expr> <C-O> ':Denite -buffer-name='.expand(t:denite_buffer_name).' outline<CR>'
+nnoremap <C-F> :Denite -split=tab -start-filter file/rec<CR>
+
+autocmd FileType denite call s:denite_my_settings()
+function! s:denite_my_settings()
+	autocmd BufLeave <buffer> pclose
+	nnoremap <silent><buffer><expr> <CR> denite#do_map('do_action')
+	nnoremap <silent><buffer><expr> <C-D> denite#do_map('quit')
 endfunction
-
-highlight link uniteStatusNormal StatusLine
-highlight link uniteStatusHead StatusLine
-highlight link uniteStatusSourceNames StatusLine
-highlight link uniteStatusSourceCandidates StatusLine
-highlight link uniteStatusMessage StatusLine
-highlight link uniteStatusLineNR StatusLine
 
 " syntastic
 let g:syntastic_always_populate_loc_list = 1
