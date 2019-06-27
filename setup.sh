@@ -1,6 +1,6 @@
 #! /bin/bash
 
-sudo aptitude install -y vim bash-completion
+sudo apt-get install -y --no-install-recommends neovim python3-neovim bash-completion
 
 if [ `uname` == 'Darwin' ] ; then
 	LN=gln
@@ -27,6 +27,9 @@ ${LN} -sT ${PWD}/ssh/config ~/.ssh/config
 
 ${LN} -sT ${PWD}/vim/.vimrc ~/.vimrc
 ${LN} -sT ${PWD}/vim/.vim ~/.vim
+
+${MKDIR} -p ~/.config/nvim
+${LN} -sT ${PWD}/nvim ~/.config/nvim/init.vim
 
 ${LN} -sT ${PWD}/git/dotgit ~/.git
 ${LN} -sT ${PWD}/git/.gitconfig ~/.gitconfig

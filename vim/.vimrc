@@ -122,6 +122,9 @@ set updatetime=500
 autocmd VimEnter * if !exists('t:denite_buffer_name') | let t:denite_buffer_name = localtime() | endif
 autocmd TabNew * if !exists('t:denite_buffer_name') | let t:denite_buffer_name = localtime() | endif
 
+call denite#custom#source('grep/git', 'sorters', ['sorter/location'])
+call denite#custom#source('grep', 'sorters', ['sorter/location'])
+call denite#custom#source('tag', 'sorters', ['sorter/location'])
 call denite#custom#source('tag', 'matchers', ['matcher/equal'])
 call denite#custom#option('_', 'vertical_preview', v:true)
 call denite#custom#option('_', 'source_names', 'short')
