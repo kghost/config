@@ -107,6 +107,7 @@ set tabstop=4
 set softtabstop=4
 set modeline
 set foldmethod=syntax
+set foldlevel=999
 set nobackup
 "set mouse=a
 "set ttymouse=xterm2
@@ -175,6 +176,17 @@ nnoremap ; :pop<CR>
 nnoremap ' :tag<CR>
 
 " nnoremap <C-]> g<C-]>
+
+nnoremap <F6> :NERDTreeToggle<CR>
+nnoremap <F7> :vertical Gstatus<CR>
+
+autocmd FileType fugitive call s:fugitive_settings()
+function! s:fugitive_settings()
+       vertical resize 30
+       set nowrap
+       set winfixwidth
+       set nonumber
+endfunction
 
 nnoremap <F8> :TagbarToggle<CR>
 nnoremap <C-U> :UndotreeToggle<CR>
