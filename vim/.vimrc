@@ -35,6 +35,9 @@ Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 
+"
+Plug 'tpope/vim-dispatch'
+
 " syntastic
 Plug 'scrooloose/syntastic'
 
@@ -106,8 +109,8 @@ set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 set modeline
-set foldmethod=syntax
-set foldlevel=999
+"set foldmethod=syntax
+"set foldlevel=999
 set nobackup
 "set mouse=a
 "set ttymouse=xterm2
@@ -123,9 +126,9 @@ set updatetime=500
 autocmd VimEnter * if !exists('t:denite_buffer_name') | let t:denite_buffer_name = localtime() | endif
 autocmd TabNew * if !exists('t:denite_buffer_name') | let t:denite_buffer_name = localtime() | endif
 
-call denite#custom#source('grep/git', 'sorters', ['sorter/location'])
-call denite#custom#source('grep', 'sorters', ['sorter/location'])
-call denite#custom#source('tag', 'sorters', ['sorter/location'])
+call denite#custom#source('grep/git', 'sorters', [''])
+call denite#custom#source('grep', 'sorters', [''])
+call denite#custom#source('tag', 'sorters', [''])
 call denite#custom#source('tag', 'matchers', ['matcher/equal'])
 call denite#custom#option('_', 'vertical_preview', v:true)
 call denite#custom#option('_', 'source_names', 'short')
@@ -149,9 +152,11 @@ function! s:denite_my_settings()
 endfunction
 
 " syntastic
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [], 'passive_filetypes': [] }
+
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_stl_format = '[%E{E:%fe#%e}%B{,}%W{W:%fw#%w}]'
 let g:syntastic_python_checkers = ['flake8']
@@ -247,7 +252,7 @@ endif
 set cinoptions=+0,j1,(1s " C++11 indent
 
 " Auto adjust quickfix/location-list window size
-autocmd FileType qf call s:AdjustWindowHeight(2, 5)
+autocmd FileType qf call s:AdjustWindowHeight(3, 15)
 function s:AdjustWindowHeight(minheight, maxheight)
   exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
