@@ -152,14 +152,15 @@ function! s:denite_my_settings()
 endfunction
 
 " syntastic
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [], 'passive_filetypes': [] }
+let g:syntastic_mode_map = { 'mode': 'passive' }
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
 let g:syntastic_stl_format = '[%E{E:%fe#%e}%B{,}%W{W:%fw#%w}]'
 let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_yaml_checkers = ['yamllint']
 
 inoremap <C-H> <Esc>:tabprevious<CR>
 inoremap <C-L> <Esc>:tabnext<CR>
