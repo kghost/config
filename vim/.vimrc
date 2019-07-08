@@ -18,6 +18,9 @@ Plug 'guns/xterm-color-table.vim'
 Plug 'mbbill/undotree'
 "Plug 'sjl/gundo.vim'
 
+Plug 'google/vim-maktaba'
+Plug 'bazelbuild/vim-bazel'
+
 " Git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -49,6 +52,9 @@ Plug 'kghost/denite-grep-git'
 Plug 'kghost/denite-filter-equal'
 
 Plug 'embear/vim-localvimrc'
+
+Plug 'MattesGroeger/vim-bookmarks'
+
 call plug#end()
 
 if has("win32")
@@ -114,7 +120,7 @@ set modeline
 set nobackup
 "set mouse=a
 "set ttymouse=xterm2
-set switchbuf+=newtab "always open new tab
+set switchbuf=useopen
 set scrolloff=3
 set showcmd
 set diffopt+=vertical
