@@ -69,3 +69,6 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
+if type kubectl > /dev/null ; then
+	source <(kubectl completion zsh)
+fi

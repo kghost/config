@@ -11,6 +11,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'othree/xml.vim'
 Plug 'jnwhiteh/vim-golang'
 Plug 'vim-scripts/py-coverage'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
@@ -127,6 +128,7 @@ set diffopt+=vertical
 set splitright " Unite split preview to the right
 set ttimeoutlen=0 " exit visual/insert mode immediately
 set updatetime=500
+set matchpairs+=<:>
 
 " Denite
 autocmd VimEnter * if !exists('t:denite_buffer_name') | let t:denite_buffer_name = localtime() | endif
@@ -157,6 +159,8 @@ function! s:denite_my_settings()
 	nnoremap <silent><buffer><expr> <C-D> denite#do_map('quit')
 endfunction
 
+let g:go_def_mapping_enabled = 0
+
 " syntastic
 let g:syntastic_mode_map = { 'mode': 'passive' }
 
@@ -167,6 +171,8 @@ let g:syntastic_check_on_wq = 1
 let g:syntastic_stl_format = '[%E{E:%fe#%e}%B{,}%W{W:%fw#%w}]'
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_yaml_checkers = ['yamllint']
+let g:syntastic_cpp_cpplint_exec = "cpplint"
+let g:syntastic_cpp_checkers = ['cpplint']
 
 inoremap <C-H> <Esc>:tabprevious<CR>
 inoremap <C-L> <Esc>:tabnext<CR>
@@ -201,6 +207,8 @@ function! s:fugitive_settings()
 endfunction
 
 nnoremap <F8> :TagbarToggle<CR>
+nnoremap <F9> :w<CR>:Make<CR>
+nnoremap <F10> :SyntasticCheck<CR>
 nnoremap <C-U> :UndotreeToggle<CR>
 
 " disable mark mappings
@@ -256,7 +264,7 @@ if has("statusline")
 	autocmd InsertLeave * highlight statusline ctermfg=None
 endif
 
-set cinoptions=+0,j1,(1s " C++11 indent
+set cinoptions=+0,j1,(1s,t0,N-s,g1,h3
 
 " Auto adjust quickfix/location-list window size
 autocmd FileType qf call s:AdjustWindowHeight(3, 15)
