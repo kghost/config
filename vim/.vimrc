@@ -264,7 +264,7 @@ if has("statusline")
 	autocmd InsertLeave * highlight statusline ctermfg=None
 endif
 
-set cinoptions=+0,j1,(1s,t0,N-s,g1,h3
+set cinoptions=+0,j1,(1s,t0,N-s,g0,h4
 
 " Auto adjust quickfix/location-list window size
 autocmd FileType qf call s:AdjustWindowHeight(3, 15)
