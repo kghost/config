@@ -37,11 +37,13 @@ ${LN} -sT ${PWD}/.tmux.conf ~/.tmux.conf
 ${LN} -sT ${PWD}/.asciidoc ~/.asciidoc
 
 ${LN} -sT ${PWD}/zsh/zshrc ~/.zshrc
-${LN} -sT ${PWD}/zsh/oh-my-zsh ~/.oh-my-zsh
+
+if [ "$SHELL" = "/usr/bin/zsh" ] ; then
+    if [ ! -d "~/.oh-my-zsh/" ] ; then
+        git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+    fi
+fi
 
 ${LN} -sT ${PWD}/.screenrc ~/.screenrc
-
-#git submodule update --init
-#git submodule sync
 
 vim +'PlugInstall --sync' +qall

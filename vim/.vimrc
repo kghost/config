@@ -115,6 +115,7 @@ set list listchars=tab:▸\ ,trail:·
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
+set expandtab
 set modeline
 "set foldmethod=syntax
 "set foldlevel=999
@@ -177,13 +178,13 @@ let g:syntastic_cpp_checkers = ['cpplint']
 inoremap <C-H> <Esc>:tabprevious<CR>
 inoremap <C-L> <Esc>:tabnext<CR>
 inoremap <C-D> <Esc>:quit<CR>
-inoremap <C-S-T> <Esc>:tabnew 
+inoremap <C-T> <Esc>:tabnew 
 
 nnoremap <C-H> :tabprevious<CR>
 nnoremap <C-L> :tabnext<CR>
 
 nnoremap <C-D> :quit<CR>
-nnoremap <C-S-T> :tabnew 
+nnoremap <C-T> :tabnew 
 
 nnoremap <C-N> :cnext<CR>
 nnoremap <C-P> :cprevious<CR>
