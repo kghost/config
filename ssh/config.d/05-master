@@ -1,0 +1,4 @@
+Host *
+        ControlPath ~/.ssh/masters/%r@%h:%p
+        ControlMaster auto
+        ControlPersist 10m

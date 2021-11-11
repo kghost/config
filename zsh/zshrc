@@ -1,15 +1,48 @@
-# Path to your oh-my-zsh configuration.
-ZSH=$HOME/.oh-my-zsh
+#!/usr/bin/env zsh
+source ~/.zpm/zpm.zsh 2>/dev/null || {
+  git clone https://github.com/zpm-zsh/zpm ~/.zpm
+  source ~/.zpm/zpm.zsh
+}
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="kphoen"
+### OpenWrt
+#zpm if openwrt load zpm-zsh/openwrt
 
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+### Termux
+#zpm if termux load zpm-zsh/termux
+
+### Tmux
+#zpm if ssh load zpm-zsh/tmux
+#zpm if-not ssh load zpm-zsh/tmux,apply:path
+
+### VTE
+#zpm if vte load zpm-zsh/vte
+
+### 3party plugins
+#zpm load                              \
+#  zpm-zsh/core-config                 \
+#  zpm-zsh/ignored-users,async         \
+#  zpm-zsh/check-deps,async            \
+#  zpm-zsh/minimal-theme               \
+#  zpm-zsh/ls,async                    \
+#  zpm-zsh/colorize,async              \
+#  zpm-zsh/ssh,async                   \
+#  zpm-zsh/dot,async                   \
+#  zpm-zsh/undollar,async
+
+### Plugins for local host
+#zpm if-not ssh load                                                                    \
+#  zpm-zsh/dropbox,async                                                                \
+#  zpm-zsh/zsh-better-npm-completion,async                                              \
+#                                                                                       \
+#  zpm-zsh/clipboard                                                                    \
+#  zpm-zsh/mysql-colorize,async                                                         \
+#  zpm-zsh/bookmarks,async                                                              \
+#  zpm-zsh/autoenv,async                                                                \
+#                                                                                       \
+#  mdumitru/fancy-ctrl-z,async                                                          \
+#  zsh-users/zsh-history-substring-search,source:zsh-history-substring-search.zsh,async \
+#  zsh-users/zsh-autosuggestions,source:zsh-autosuggestions.zsh,async
 
 # Set to this to use case-sensitive completion
 CASE_SENSITIVE="true"
@@ -24,7 +57,7 @@ DISABLE_AUTO_UPDATE="true"
 # DISABLE_LS_COLORS="true"
 
 # Uncomment following line if you want to disable autosetting terminal title.
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 
 # Uncomment following line if you want to disable command autocorrection
 DISABLE_CORRECTION="true"
@@ -32,28 +65,31 @@ DISABLE_CORRECTION="true"
 # Uncomment following line if you want red dots to be displayed while waiting for completion
 COMPLETION_WAITING_DOTS="true"
 
-# Uncomment following line if you want to disable marking untracked files under
-# VCS as dirty. This makes repository status check for large repositories much,
-# much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+# Pull in OMZ (doesn't actually source anything)
+zpm load @omz
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git mvn systemd per-directory-history)
+# Load any OMZ libraries we want or our OMZ plugins require
+zpm load                \
+  @omz-lib/compfix      \
+  @omz-lib/completion   \
+  @omz-lib/directories  \
+  @omz-lib/functions    \
+  @omz-lib/git          \
+  @omz-lib/grep         \
+  @omz-lib/history      \
+  @omz-lib/key-bindings \
+  @omz-lib/misc         \
+  @omz-lib/spectrum     \
+  @omz-lib/termsupport  \
+  @omz-lib/theme-and-appearance
 
-source $ZSH/oh-my-zsh.sh
+# Load some OMZ plugins and theme
+zpm load          \
+  @omz/git        \
+  @omz/systemd    \
+  @omz/per-directory-history
 
-# Customize to your needs...
-bindkey "^U" backward-kill-line
-bindkey "^W" vi-backward-kill-word
-bindkey "^[[1;3C" vi-forward-word
-bindkey "^[[1;3D" vi-backward-word
-
-if [ -d "/home/kghost/.nvm" ] ; then
-	export NVM_DIR="/home/kghost/.nvm"
-	[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-fi
+zpm load @omz-theme/kphoen
 
 if [ ! -n "$SSH_AUTH_SOCK" ] ; then
 	export SSH_AUTH_SOCK="/tmp/ssh-agent.$USER.socket"
@@ -69,6 +105,17 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-if type kubectl > /dev/null ; then
-	source <(kubectl completion zsh)
-fi
+change_title_bar () {
+    title "$(basename $PWD) ($(git rev-parse --abbrev-ref HEAD 2>/dev/null)): $2"
+}
+
+add-zsh-hook precmd change_title_bar
+add-zsh-hook preexec change_title_bar
+
+# Customize to your needs...
+bindkey "^U" backward-kill-line
+bindkey "^W" vi-backward-kill-word
+bindkey "^[[1;3C" vi-forward-word
+bindkey "^[[1;3D" vi-backward-word
+
+source ~/.zshrc.local 2>/dev/null

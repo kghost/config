@@ -36,12 +36,8 @@ ${LN} -sT ${PWD}/git/.gitconfig ~/.gitconfig
 ${LN} -sT ${PWD}/.tmux.conf ~/.tmux.conf
 ${LN} -sT ${PWD}/.asciidoc ~/.asciidoc
 
-${LN} -sT ${PWD}/zsh/zshrc ~/.zshrc
-
 if [ "$SHELL" = "/usr/bin/zsh" ] ; then
-    if [ ! -d "~/.oh-my-zsh/" ] ; then
-        git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-    fi
+    ${LN} -sT ${PWD}/zsh/zshrc ~/.zshrc
 fi
 
 ${LN} -sT ${PWD}/.screenrc ~/.screenrc
