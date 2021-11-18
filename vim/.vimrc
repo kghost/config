@@ -131,6 +131,8 @@ set ttimeoutlen=0 " exit visual/insert mode immediately
 set updatetime=500
 set matchpairs+=<:>
 
+let g:snipMate = { 'snippet_version' : 1 }
+
 " Denite
 autocmd VimEnter * if !exists('t:denite_buffer_name') | let t:denite_buffer_name = localtime() | endif
 autocmd TabNew * if !exists('t:denite_buffer_name') | let t:denite_buffer_name = localtime() | endif
