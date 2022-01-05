@@ -28,3 +28,5 @@
 	date = relative
 [format]
 	pretty = format:%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s
+[submodule]
+	recurse = 1

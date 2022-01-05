@@ -120,3 +120,11 @@ bindkey "^[[1;3C" vi-forward-word
 bindkey "^[[1;3D" vi-backward-word
 
 source ~/.zshrc.local 2>/dev/null
+
+# load additional configuration
+if [[ -d ~/.zshrc.d ]]; then
+    for file in ~/.zshrc.d/*.zsh; do
+        source "$file"
+    done
+    unset file
+fi

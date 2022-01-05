@@ -46,9 +46,13 @@ Plug 'tpope/vim-dispatch'
 Plug 'scrooloose/syntastic'
 
 " Denite
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'roxma/nvim-yarp'
-Plug 'Shougo/denite.nvim'
+if has('nvim')
+  Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/denite.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 Plug 'kghost/denite-grep-git'
 Plug 'kghost/denite-filter-equal'
 
