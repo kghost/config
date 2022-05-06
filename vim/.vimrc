@@ -150,7 +150,7 @@ call denite#custom#option('_', 'source_names', 'short')
 call denite#custom#option('_', 'auto_resize', v:true)
 call denite#custom#option('_', 'winheight', 10)
 call denite#custom#option('_', 'auto_action', 'preview')
-call denite#custom#option('_', 'default_action', 'tabopen')
+call denite#custom#option('_', 'default_action', 'open')
 
 nnoremap <expr> S ':DeniteCursorWord -buffer-name='.expand(t:denite_buffer_name).' grep/git::-w<CR>'
 nnoremap <expr> F ':Denite -buffer-name='.expand(t:denite_buffer_name).' grep/git::-w<CR>'
@@ -158,11 +158,13 @@ nnoremap <expr> X ':DeniteCursorWord -buffer-name='.expand(t:denite_buffer_name)
 nnoremap <expr> <C-I> ':DeniteCursorWord -buffer-name='.expand(t:denite_buffer_name).' -immediately-1 tag<CR>'
 nnoremap <expr> <C-O> ':Denite -buffer-name='.expand(t:denite_buffer_name).' outline<CR>'
 nnoremap <C-F> :Denite -split=tab -start-filter file/rec<CR>
+nnoremap <expr> <C-J> ':Denite -buffer-name='.expand(t:denite_buffer_name).' -resume -cursor-pos=+1 -immediately<CR>'
+nnoremap <expr> <C-K> ':Denite -buffer-name='.expand(t:denite_buffer_name).' -resume -cursor-pos=-1 -immediately<CR>'
 
 autocmd FileType denite call s:denite_my_settings()
 function! s:denite_my_settings()
 	autocmd BufLeave <buffer> pclose
-	nnoremap <silent><buffer><expr> <CR> denite#do_map('do_action')
+	nnoremap <silent><buffer><expr> <CR> denite#do_map('do_action', 'tabopen')
 	nnoremap <silent><buffer><expr> <C-D> denite#do_map('quit')
 endfunction
 
@@ -186,6 +188,7 @@ inoremap <C-L> <Esc>:tabnext<CR>
 inoremap <C-D> <Esc>:quit<CR>
 inoremap <C-T> <Esc>:tabnew 
 
+nnoremap <C-S> :tab split<CR>
 nnoremap <C-H> :tabprevious<CR>
 nnoremap <C-L> :tabnext<CR>
 
@@ -194,8 +197,6 @@ nnoremap <C-T> :tabnew
 
 nnoremap <C-N> :cnext<CR>
 nnoremap <C-P> :cprevious<CR>
-nnoremap <C-J> :lnext<CR>
-nnoremap <C-K> :lprevious<CR>
 
 nnoremap ; :pop<CR>
 nnoremap ' :tag<CR>
