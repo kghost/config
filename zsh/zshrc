@@ -71,18 +71,18 @@ zpm load @omz
 
 # Load any OMZ libraries we want or our OMZ plugins require
 zpm load                \
-  @omz-lib/compfix      \
-  @omz-lib/completion   \
-  @omz-lib/directories  \
-  @omz-lib/functions    \
-  @omz-lib/git          \
-  @omz-lib/grep         \
-  @omz-lib/history      \
-  @omz-lib/key-bindings \
-  @omz-lib/misc         \
-  @omz-lib/spectrum     \
-  @omz-lib/termsupport  \
-  @omz-lib/theme-and-appearance
+  @omz/lib/compfix      \
+  @omz/lib/completion   \
+  @omz/lib/directories  \
+  @omz/lib/functions    \
+  @omz/lib/git          \
+  @omz/lib/grep         \
+  @omz/lib/history      \
+  @omz/lib/key-bindings \
+  @omz/lib/misc         \
+  @omz/lib/spectrum     \
+  @omz/lib/termsupport  \
+  @omz/lib/theme-and-appearance
 
 # Load some OMZ plugins and theme
 zpm load          \
@@ -90,7 +90,7 @@ zpm load          \
   @omz/systemd    \
   @omz/per-directory-history
 
-zpm load @omz-theme/kphoen
+zpm load @omz/theme/kphoen
 
 if [ ! -n "$SSH_AUTH_SOCK" ] ; then
 	export SSH_AUTH_SOCK="/tmp/ssh-agent.$USER.socket"
@@ -107,7 +107,7 @@ if [ -d "$HOME/bin" ] ; then
 fi
 
 change_title_bar () {
-    title "$(basename $PWD) ($(git rev-parse --abbrev-ref HEAD 2>/dev/null)): $2"
+    title "$(hostname) $(basename $PWD) ($(git rev-parse --abbrev-ref HEAD 2>/dev/null)): $2"
 }
 
 add-zsh-hook precmd change_title_bar
