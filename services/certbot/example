@@ -1,0 +1,1 @@
+certbot certonly --agree-tos --manual --preferred-challenge=dns --manual-auth-hook="$(pwd)/acme-nsupdate.sh" --manual-cleanup-hook="$(pwd)/acme-clean.sh" --post-hook="$(pwd)/post-hook-update-owner.sh"

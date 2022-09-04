@@ -1,0 +1,4 @@
+key dyn_update {
+        algorithm HMAC-SHA512;
+        secret "<your dns update key>";
+};
