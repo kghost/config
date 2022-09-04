@@ -1,0 +1,17 @@
+#! /bin/bash
+
+DIST=$(lsb_release -cs)
+
+tee /etc/apt/sources.list.d/debian.list <<EOF
+deb http://security.debian.org/ ${DIST}/updates main
+deb-src http://security.debian.org/ ${DIST}/updates main
+
+deb http://ftp.debian.org/debian/ ${DIST}-updates main
+deb-src http://ftp.debian.org/debian/ ${DIST}-updates main
+
+deb http://ftp.debian.org/debian/ ${DIST}-backports main
+deb-src http://ftp.debian.org/debian/ ${DIST}-backports main
+
+deb http://ftp.debian.org/debian/ ${DIST} main
+deb-src http://ftp.debian.org/debian/ ${DIST} main
+EOF
