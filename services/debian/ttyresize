@@ -1,0 +1,12 @@
+#! /bin/bash
+
+tty -s || exit 1
+
+trap '' 1 2 3 18
+
+stty -echo
+echo 1b5b313874 | xxd -ps -r
+read -d t c
+stty echo
+`echo $c | sed -ne 's/\x1b\[8;\([0-9]*\);\([0-9]*\)$/stty rows \1 cols \2/p'`
+stty echo

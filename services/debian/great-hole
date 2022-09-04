@@ -1,0 +1,116 @@
+#! /bin/bash
+
+TUN_LOCAL_ADDRESS=172.31.26.6
+TUN_PEER_ADDRESS=172.31.26.5
+
+sudo aptitude install great-hole
+sudo mkdir -p /etc/great-hole
+
+sudo tee /etc/great-hole/start.lua <<EOF
+function string.fromhex(str)
+        return (str:gsub('..', function (cc)
+                return string.char(tonumber(cc, 16))
+        end))
+end
+
+key = "25c55aeeed1c3c194ac3ecc51ad7197a33844a453500842b0e38416c8b39cf22e757f95ef441bc4f60367e6e165722f3c46913a530f6a165571e70e11cb2f0ee"
+
+u = hole.udp(18913)
+c = u:create_channel("106.15.180.163", 18913)
+o = hole.tun("hole")
+
+f = hole.filter_xor(key:fromhex())
+
+p1 = hole.pipeline(c, f, o)
+p2 = hole.pipeline(o, f, c)
+
+p1:start()
+p2:start()
+EOF
+
+sudo tee /etc/network/interfaces.d/99-hole <<EOF
+allow-hotplug hole
+iface hole inet static
+        address ${TUN_LOCAL_ADDRESS}
+        pointopoint ${TUN_PEER_ADDRESS}
+        netmask 255.255.255.255
+        mtu 1420
+EOF
+
+sudo systemctl enable great-hole.service
+sudo systemctl start great-hole.service
+sudo systemctl status great-hole.service
+
+// CN: /etc/great-hole/start.lua /etc/great-hole/up.sh
+
+sudo aptitude install quagga-ospfd
+sudo install -o quagga -g quagga -T /usr/share/doc/quagga-core/examples/zebra.conf.sample /etc/quagga/zebra.conf
+sudo install -o quagga -g quagga -T /usr/share/doc/quagga-core/examples/ospfd.conf.sample /etc/quagga/ospfd.conf
+sudo systemctl restart zebra.service
+sudo systemctl restart ospfd.service
+
+sudo vtysh << EOF
+configure terminal
+router ospf
+ ospf router-id ${TUN_LOCAL_ADDRESS}
+ network 172.31.0.0/16 area 0.0.0.0
+ default-information originate metric 20
+end
+write
+EOF
+
+sudo aptitude install shorewall
+
+cat | sudo tee /etc/shorewall/interfaces <<EOF
+###############################################################################
+#ZONE   INTERFACE       BROADCAST       OPTIONS
+net     eth0
+gfw     hole
+EOF
+
+cat | sudo tee /etc/shorewall/policy <<EOF
+###############################################################################
+#SOURCE DEST    POLICY          LOG     LIMIT:          CONNLIMIT:
+#                               LEVEL   BURST           MASK
+fw      all     ACCEPT
+all     fw      ACCEPT
+gfw     all     ACCEPT
+all     all     REJECT
+EOF
+
+cat | sudo tee /etc/shorewall/snat <<EOF
+###################################################################################################################
+#ACTION         SOURCE          DEST            PROTO   PORT   IPSEC  MARK   USER    SWITCH  ORIGDEST   PROBABILITY
+MASQUERADE      172.28.0.0/16   eth0
+MASQUERADE      172.31.0.0/16   eth0
+EOF
+
+cat | sudo tee /etc/shorewall/zones <<EOF
+###############################################################################
+#ZONE   TYPE            OPTIONS         IN                      OUT
+#                                       OPTIONS                 OPTIONS
+fw      firewall
+net     ipv4
+gfw     ipv4
+EOF
+
+sudo systemctl enable shorewall.service
+sudo systemctl restart shorewall.service
+
+cat | sudo tee /etc/sysctl.d/51-ip_forward.conf <<EOF
+net.ipv4.ip_forward=1
+EOF
+
+sudo sysctl -p /etc/sysctl.d/51-ip_forward.conf
+
+sudo aptitude status tcp-shaping
+
+cat | sudo tee /etc/default/tcp-shaping <<EOF
+INTERFACE=hole
+RULE=30000
+RTABLE=100
+FWMARK=0x1
+PORT=4893
+EOF
+
+sudo systemctl restart tcp-shaping.service

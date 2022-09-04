@@ -1,0 +1,12 @@
+#!/bin/bash
+
+wget -O /etc/apt/trusted.gpg.d/debian-kghost.gpg http://kghost.info/~kghost/debian-kghost.gpg
+
+DIST=$(lsb_release -cs)
+
+echo "Using distribution $(tput bold)${DIST}$(tput sgr0)"
+
+tee /etc/apt/sources.list.d/kghost.list <<EOF
+deb http://debian.kghost.info ${DIST} main
+deb-src http://debian.kghost.info ${DIST} main
+EOF

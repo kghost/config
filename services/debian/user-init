@@ -1,0 +1,49 @@
+#! /bin/bash
+
+mkdir .ssh
+cat > .ssh/authorized_keys <<EOF
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7jFoqHGbHjljqJIXdIA68uT2sE9GH0AzVOYpizas2/FfKyYL4HMsxAbS3wbrRCzf9wJ+MNX1tvWkCTp8p2MA477+5IZ+B7CnqIJUCZLrZO9IF4V60JTgI8/NY1nkCRR2n1oOfunsbzrhl2AtRKG4l0pI6HU5M6VzHhI/ZhK8JRD/bfu5SGKylenQ+mxC0UNZILlMkffUZPNmblcc7bwDv7PjY31JGQS2m0u2n2g9RXmoVvYQGayBJJVxIfNkQAUstKy+oZEOlsTH9D0XP/Qdx3hmf7jtSppRB1LjJBKwj/2TWYEdE3EjoyC1/bLa77KrlYQltK03hNb5o1tW9NHBCZx2Q2PhuoWOw7H5Uw4pT//EG+Hd4dN01Ba/cTH1SBOWb3uyxF3m45/SILf5xMEOsrf/aIwtZsUDfk4WFPuREg2t9vlsJ9HEwLIyWfCpoxyOCo7z8+HcNMAMLZmzXYBg1oqwI4sqb4wkDjlqzycmZinhvRoqcx5Zi6QSSG+HoG2bNdnb+qXfdHyBttkMDScDMei6v2GidZHoJO6yA1Oz6mKZG90H1sL3aLPBhynu4McoM+PyEOzx2nKUp5inuCFb5nIhzmlK4bB4f0fciwFsD6MaEV/vk8OfXzedDWB4QqvorvGzkBcqaejH7FIflHm5KqrpnuMkjkxHdEuqqOimLwQ== kghost
+EOF
+
+sudo passwd -d root
+
+DIST=$(lsb_release -cs)
+
+sudo tee /etc/apt/sources.list.d/debian.list <<EOF
+deb http://security.debian.org/ ${DIST}/updates main
+deb-src http://security.debian.org/ ${DIST}/updates main
+
+deb http://ftp.debian.org/debian/ ${DIST}-updates main
+deb-src http://ftp.debian.org/debian/ ${DIST}-updates main
+
+deb http://ftp.debian.org/debian/ ${DIST}-backports main
+deb-src http://ftp.debian.org/debian/ ${DIST}-backports main
+
+deb http://ftp.debian.org/debian/ ${DIST} main
+deb-src http://ftp.debian.org/debian/ ${DIST} main
+EOF
+
+sudo tee /etc/apt/preferences.d/bpo <<EOF
+Package: *
+Pin: release a=${DIST}-backports
+Pin-Priority: 500
+EOF
+
+sudo tee /etc/sysctl.d/50-bbr.conf <<EOF
+net.core.default_qdisc=fq
+net.ipv4.tcp_congestion_control=bbr
+EOF
+
+sudo apt-get update
+sudo apt-get install aptitude -y
+
+sudo tee /etc/apt/apt.conf <<EOF
+APT::Get::Install-Recommends "false";
+APT::Get::Install-Suggests "false";
+EOF
+
+sudo aptitude install git -y
+
+git clone ssh://git@github.com/kghost/config
+cd config
+./setup.sh

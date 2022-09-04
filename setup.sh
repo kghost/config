@@ -1,14 +1,16 @@
 #! /bin/bash
 
-sudo apt-get install -y --no-install-recommends neovim python3-neovim bash-completion
+sudo apt-get install -y --no-install-recommends git-crypt neovim python3-neovim bash-completion
 
 if [ `uname` == 'Darwin' ] ; then
 	LN=gln
 	MKDIR=gmkdir
+	RMDIR=grmdir
 	CP=gcp
 else
 	LN=ln
 	MKDIR=mkdir
+	RMDIR=rmdir
 	CP=cp
 fi
 
@@ -20,10 +22,10 @@ if [ -d /etc/skel/ ] ; then
 	done
 fi
 
-${MKDIR} -p ~/.ssh/conf.d
-
+${MKDIR} -p ~/.ssh
 ${LN} -sT ${PWD}/ssh/authorized_keys ~/.ssh/authorized_keys
 ${LN} -sT ${PWD}/ssh/config ~/.ssh/config
+${LN} -sT ${PWD}/ssh/config.d ~/.ssh/config.d
 
 ${LN} -sT ${PWD}/vim/.vimrc ~/.vimrc
 ${LN} -sT ${PWD}/vim/.vim ~/.vim
