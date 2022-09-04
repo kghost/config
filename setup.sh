@@ -1,6 +1,6 @@
 #! /bin/bash
 
-sudo apt-get install -y --no-install-recommends git-crypt neovim python3-neovim bash-completion
+sudo apt-get install -y --no-install-recommends git-crypt neovim python3-neovim bash-completion dbus-user-session
 
 if [ `uname` == 'Darwin' ] ; then
 	LN=gln

@@ -13,3 +13,7 @@ systemctl --user stop gpg-agent.socket
 systemctl --user mask gpg-agent.socket
 
 gpgconf --create-socketdir
+
+gpg --recv-keys 3640DD71F863C6DEA7DB8680CE1F766CAF00382D
+
+gpg --import-ownertrust < "$(dirname ${BASH_SOURCE[0]})/ownertrust"
