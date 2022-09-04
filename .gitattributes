@@ -1,2 +1,5 @@
 * text=auto eol=lf
 *.jar	-crlf
+
+# Secrets
+services/certbot/dyn_update filter=git-crypt diff=git-crypt
