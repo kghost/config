@@ -7,11 +7,13 @@ if [ `uname` == 'Darwin' ] ; then
 	MKDIR=gmkdir
 	RMDIR=grmdir
 	CP=gcp
+	RM=grm
 else
 	LN=ln
 	MKDIR=mkdir
 	RMDIR=rmdir
 	CP=cp
+	RM=rm
 fi
 
 PWD=`pwd`
@@ -45,4 +47,14 @@ fi
 
 ${LN} -sT ${PWD}/.screenrc ~/.screenrc
 
+${MKDIR} -p ~/.gnupg
+if [ ! -L ~/.gnupg/gpg.conf ] ; then
+    ${RM} ~/.gnupg/gpg.conf
+fi
+${LN} -sT ${PWD}/gpg/gpg.conf ~/.gnupg/gpg.conf
+
 vim +'PlugInstall --sync' +qall
+
+if [ "$(id -u)" != "1000" ] ; then
+    echo "$(tput bold)Warning$(tput sgr0): Your uid is not 1000"
+fi

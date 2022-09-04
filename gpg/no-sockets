@@ -1,0 +1,13 @@
+#! /bin/bash
+
+systemctl --user stop gpg-agent-browser.socket
+systemctl --user mask gpg-agent-browser.socket
+
+systemctl --user stop gpg-agent-extra.socket
+systemctl --user mask gpg-agent-extra.socket
+
+systemctl --user stop gpg-agent-ssh.socket
+systemctl --user mask gpg-agent-ssh.socket
+
+systemctl --user stop gpg-agent.socket
+systemctl --user mask gpg-agent.socket
