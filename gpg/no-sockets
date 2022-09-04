@@ -11,3 +11,5 @@ systemctl --user mask gpg-agent-ssh.socket
 
 systemctl --user stop gpg-agent.socket
 systemctl --user mask gpg-agent.socket
+
+gpgconf --create-socketdir
