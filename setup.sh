@@ -23,6 +23,7 @@ if [ -d /etc/skel/ ] ; then
 fi
 
 ${MKDIR} -p ~/.ssh
+${MKDIR} -p ~/.ssh/masters
 ${LN} -sT ${PWD}/ssh/authorized_keys ~/.ssh/authorized_keys
 ${LN} -sT ${PWD}/ssh/config ~/.ssh/config
 ${LN} -sT ${PWD}/ssh/config.d ~/.ssh/config.d
