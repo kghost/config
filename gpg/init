@@ -13,7 +13,39 @@ systemctl --user stop gpg-agent.socket
 systemctl --user mask gpg-agent.socket
 
 gpgconf --create-socketdir
+gpgconf --kill gpg-agent
+
+systemctl --user start dirmngr.service
+
+if [ $(gpgconf --list-dirs agent-socket) != /run/user/1000/gnupg/S.gpg-agent ] ; then
+    echo "$(tput bold)Warning$(tput sgr0): Your gpg agent socket is wrong $(gpgconf --list-dirs agent-socket)"
+    exit 1
+fi
 
 gpg --recv-keys 3640DD71F863C6DEA7DB8680CE1F766CAF00382D
-
 gpg --import-ownertrust < "$(dirname ${BASH_SOURCE[0]})/ownertrust"
+
+echo Try decrypt something ...
+
+xxd -ps -r <<EOF | gpg --decrypt
+85020c03ad6149442d183be6010ffe2b8a7b0d89cebd7d34f29f4d44c065
+75ad145e1198eb7d84da758e136df26f99bd40a2a0504af9529d22de42df
+d82f7c428f18ad32d811e0456545c6cfe280fe85eccb093b56b09e1560a7
+30a9cc0bb84fdb4cb6c0e7c775ecd724774a10e1dfa6a4ae528d14244121
+4063b7d026ec8a0fa2ea11389c141e52f033be7303d3595456bb96cf2682
+71a9e5fadd64c6e0373bdfe73c4f025ef2ab4de6a254effb42377df61e86
+bc6c8cd460898a393b01e45023fd3b7770f70b172f79a013ad4b8e4fc184
+71e7d76bbe19de2fccb1aa6cb59dbc30cf4330319e646d36802ae4956b95
+faa15605d85c1da9f411f2e10d491265dc3547659e6fa843d8f74fd7d80c
+c67959e05ce44b264fc0183aa634a25a276291ca6038d3318a835bb9943e
+b653c3e1add5bbf4817a65f08ae949dfaf19eeef12db94263926fc3403c0
+320db253eb981fd69eb317235567faad653d65bc3cdd00e1409f75999641
+5925ea0763d3b41174a6b1b5a44f353649ca695add6e9217278c75f6bf39
+07e5bfaea6b121a69bb34c24b0ad56aa250d13fb813ff5a1a735eaf2de36
+5d1da61b101bd95ccccafa46629fa0d414e39c00403dbdec5eb14e461053
+d06e600ee80e36e2ef83bbe1289e7e915961d593c858231a4353f87e7922
+c2345a0124665909000050020338a70773875beb59cc736da374534175f5
+3f7b0f851ebcf6b8e33a9c05aa52fa91cdd2400113438670e8c4faaf3f04
+afa30770e82f60033d620e600b4020461c04865153fe5ae391fbd17929bf
+1951bc0bf0cb7598ef1039745ba4a1b663ccae679e9bf3
+EOF
