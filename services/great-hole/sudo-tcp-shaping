@@ -1,0 +1,13 @@
+#! /bin/bash
+
+aptitude status tcp-shaping
+
+cat | tee /etc/default/tcp-shaping <<EOF
+INTERFACE=hole
+RULE=30000
+RTABLE=100
+FWMARK=0x1
+PORT=4893
+EOF
+
+systemctl restart tcp-shaping.service

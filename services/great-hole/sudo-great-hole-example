@@ -1,0 +1,42 @@
+#! /bin/bash
+
+TUN_LOCAL_ADDRESS=172.31.26.6
+TUN_PEER_ADDRESS=172.31.26.5
+
+aptitude install great-hole
+mkdir -p /etc/great-hole
+
+tee /etc/great-hole/start.lua <<EOF
+function string.fromhex(str)
+        return (str:gsub('..', function (cc)
+                return string.char(tonumber(cc, 16))
+        end))
+end
+
+key = "25c55aeeed1c3c194ac3ecc51ad7197a33844a453500842b0e38416c8b39cf22e757f95ef441bc4f60367e6e165722f3c46913a530f6a165571e70e11cb2f0ee"
+
+u = hole.udp(18913)
+c = u:create_channel("106.15.180.163", 18913)
+o = hole.tun("hole")
+
+f = hole.filter_xor(key:fromhex())
+
+p1 = hole.pipeline(c, f, o)
+p2 = hole.pipeline(o, f, c)
+
+p1:start()
+p2:start()
+EOF
+
+tee /etc/network/interfaces.d/99-hole <<EOF
+allow-hotplug hole
+iface hole inet static
+        address ${TUN_LOCAL_ADDRESS}
+        pointopoint ${TUN_PEER_ADDRESS}
+        netmask 255.255.255.255
+        mtu 1420
+EOF
+
+systemctl enable great-hole.service
+systemctl start great-hole.service
+systemctl status great-hole.service

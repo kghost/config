@@ -1,0 +1,17 @@
+#! /bin/bash
+
+aptitude install quagga-ospfd
+install -o quagga -g quagga -T /usr/share/doc/quagga-core/examples/zebra.conf.sample /etc/quagga/zebra.conf
+install -o quagga -g quagga -T /usr/share/doc/quagga-core/examples/ospfd.conf.sample /etc/quagga/ospfd.conf
+systemctl restart zebra.service
+systemctl restart ospfd.service
+
+vtysh << EOF
+configure terminal
+router ospf
+ ospf router-id ${TUN_LOCAL_ADDRESS}
+ network 172.31.0.0/16 area 0.0.0.0
+ default-information originate metric 20
+end
+write
+EOF
