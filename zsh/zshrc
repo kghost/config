@@ -21,76 +21,36 @@ DISABLE_CORRECTION="true"
 # Uncomment following line if you want red dots to be displayed while waiting for completion
 COMPLETION_WAITING_DOTS="true"
 
-source ~/.zpm/zpm.zsh 2>/dev/null || {
-  git clone https://github.com/zpm-zsh/zpm ~/.zpm
-  source ~/.zpm/zpm.zsh
-}
 
-### OpenWrt
-#zpm if openwrt load zpm-zsh/openwrt
+# ZINIT initialize
+ZINIT_HOME="${HOME}/.local/share/zinit/zinit.git"
+if [ ! -d "${ZINIT_HOME}" ]; then
+  mkdir -p "$(dirname $ZINIT_HOME)"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+source "${ZINIT_HOME}/zinit.zsh"
 
+# Load OMZ libs
+zinit snippet OMZL::compfix.zsh
+zinit snippet OMZL::completion.zsh
+zinit snippet OMZL::directories.zsh
+zinit snippet OMZL::functions.zsh
+zinit snippet OMZL::git.zsh
+zinit snippet OMZL::grep.zsh
+zinit snippet OMZL::history.zsh
+zinit snippet OMZL::key-bindings.zsh
+zinit snippet OMZL::misc.zsh
+zinit snippet OMZL::spectrum.zsh
+zinit snippet OMZL::termsupport.zsh
+zinit snippet OMZL::theme-and-appearance.zsh
 
-### Termux
-#zpm if termux load zpm-zsh/termux
+# Load OMZ plugins
+zinit snippet OMZP::git
+zinit snippet OMZP::systemd
+zinit snippet OMZP::per-directory-history/per-directory-history.zsh
 
-### Tmux
-#zpm if ssh load zpm-zsh/tmux
-#zpm if-not ssh load zpm-zsh/tmux,apply:path
-
-### VTE
-#zpm if vte load zpm-zsh/vte
-
-### 3party plugins
-#zpm load                              \
-#  zpm-zsh/core-config                 \
-#  zpm-zsh/ignored-users,async         \
-#  zpm-zsh/check-deps,async            \
-#  zpm-zsh/minimal-theme               \
-#  zpm-zsh/ls,async                    \
-#  zpm-zsh/colorize,async              \
-#  zpm-zsh/ssh,async                   \
-#  zpm-zsh/dot,async                   \
-#  zpm-zsh/undollar,async
-
-### Plugins for local host
-#zpm if-not ssh load                                                                    \
-#  zpm-zsh/dropbox,async                                                                \
-#  zpm-zsh/zsh-better-npm-completion,async                                              \
-#                                                                                       \
-#  zpm-zsh/clipboard                                                                    \
-#  zpm-zsh/mysql-colorize,async                                                         \
-#  zpm-zsh/bookmarks,async                                                              \
-#  zpm-zsh/autoenv,async                                                                \
-#                                                                                       \
-#  mdumitru/fancy-ctrl-z,async                                                          \
-#  zsh-users/zsh-history-substring-search,source:zsh-history-substring-search.zsh,async \
-#  zsh-users/zsh-autosuggestions,source:zsh-autosuggestions.zsh,async
-
-# Pull in OMZ (doesn't actually source anything)
-zpm load @omz
-
-# Load any OMZ libraries we want or our OMZ plugins require
-zpm load                \
-  @omz/lib/compfix      \
-  @omz/lib/completion   \
-  @omz/lib/directories  \
-  @omz/lib/functions    \
-  @omz/lib/git          \
-  @omz/lib/grep         \
-  @omz/lib/history      \
-  @omz/lib/key-bindings \
-  @omz/lib/misc         \
-  @omz/lib/spectrum     \
-  @omz/lib/termsupport  \
-  @omz/lib/theme-and-appearance
-
-# Load some OMZ plugins and theme
-zpm load          \
-  @omz/git        \
-  @omz/systemd    \
-  @omz/per-directory-history
-
-zpm load @omz/theme/kphoen
+# Load OMZ theme
+zinit snippet OMZT::kphoen
 
 if [ ! -n "$SSH_AUTH_SOCK" ] ; then
 	export SSH_AUTH_SOCK="/tmp/ssh-agent.$USER.socket"
