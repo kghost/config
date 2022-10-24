@@ -50,6 +50,8 @@ zinit snippet OMZP::git
 zinit snippet OMZP::systemd
 zinit snippet OMZP::per-directory-history/per-directory-history.zsh
 
+autoload -Uz compinit && compinit
+
 ### Begin prompt
 
 # Need this so the prompt will work.
