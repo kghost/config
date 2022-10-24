@@ -21,6 +21,7 @@ DISABLE_CORRECTION="true"
 # Uncomment following line if you want red dots to be displayed while waiting for completion
 COMPLETION_WAITING_DOTS="true"
 
+HOST=$(hostname -f)
 
 # ZINIT initialize
 ZINIT_HOME="${HOME}/.local/share/zinit/zinit.git"
@@ -49,8 +50,59 @@ zinit snippet OMZP::git
 zinit snippet OMZP::systemd
 zinit snippet OMZP::per-directory-history/per-directory-history.zsh
 
-# Load OMZ theme
-zinit snippet OMZT::kphoen
+### Begin prompt
+
+# Need this so the prompt will work.
+setopt prompt_subst
+
+# See if we can use colors.
+autoload zsh/terminfo
+for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE GREY; do
+  typeset -g PR_$color="%{$terminfo[bold]$fg[${(L)color}]%}"
+  typeset -g PR_LIGHT_$color="%{$fg[${(L)color}]%}"
+done
+PR_NO_COLOUR="%{$terminfo[sgr0]%}"
+
+# Modify Git prompt
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[red]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY=""
+ZSH_THEME_GIT_PROMPT_CLEAN=""
+
+ZSH_THEME_GIT_PROMPT_ADDED="%{$fg[green]%} %{%G✚%}"
+ZSH_THEME_GIT_PROMPT_MODIFIED="%{$fg[blue]%} %{%G✹%}"
+ZSH_THEME_GIT_PROMPT_DELETED="%{$fg[red]%} %{%G✖%}"
+ZSH_THEME_GIT_PROMPT_RENAMED="%{$fg[magenta]%} %{%G➜%}"
+ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[yellow]%} %{%G═%}"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%} %{%G✭%}"
+
+PR_HBAR="─"
+
+# Finally, the prompt.
+number_jobs="%(?..)"
+return_code="%(?..${PR_BLUE}(%{$fg[red]%}%?↵${PR_BLUE}%)$terminfo[cuf1])"
+PR_1='${PR_GREY}[${PR_CYAN}%(!.%SROOT%s.%n)${PR_GREY}@${PR_GREEN}%M${PR_GREY}:${PR_GREEN}%~${PR_GREY}]$terminfo[cuf1]'
+PR_2='${PR_BLUE}($(git_prompt_info)$(git_prompt_status)${PR_BLUE})$terminfo[cuf1]'
+PR_3='${return_code}'
+PR_4='${PR_BLUE}($$${PR_BLUE})$terminfo[cuf1]'
+PR_5='${PR_BLUE}(${PR_YELLOW}%D{%Y %b %d} ${PR_MAGENTA}%D{%H:%M:%S}${PR_BLUE})$terminfo[cuf1]'
+
+PROMPT="${PR_CYAN}${(pl:${COLUMNS}::$PR_HBAR:)}$terminfo[cr]\
+${PR_1}${PR_2}${PR_3}${PR_4}${PR_5}\
+
+%#${PR_NO_COLOUR} "
+
+PS2='(${PR_LIGHT_GREEN}%_)\
+${PR_BLUE}>${PR_NO_COLOUR} '
+
+### End prompt
+
+change_title_bar () {
+    title "$(hostname) $(basename $PWD) ($(git rev-parse --abbrev-ref HEAD 2>/dev/null)): $2"
+}
+
+add-zsh-hook precmd change_title_bar
+add-zsh-hook preexec change_title_bar
 
 if [ ! -n "$SSH_AUTH_SOCK" ] ; then
 	export SSH_AUTH_SOCK="/tmp/ssh-agent.$USER.socket"
@@ -65,13 +117,6 @@ fi
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
-
-change_title_bar () {
-    title "$(hostname) $(basename $PWD) ($(git rev-parse --abbrev-ref HEAD 2>/dev/null)): $2"
-}
-
-add-zsh-hook precmd change_title_bar
-add-zsh-hook preexec change_title_bar
 
 # Customize to your needs...
 bindkey "^U" backward-kill-line
