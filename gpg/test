@@ -1,5 +1,10 @@
 #! /bin/bash
 
+if [ ! -e "$(gpgconf --list-dirs agent-socket)" ]; then
+    echo GPG agent socket doesn\'t exist
+    exit 1
+fi
+
 echo Try decrypt something ...
 
 xxd -ps -r <<EOF | gpg --decrypt
