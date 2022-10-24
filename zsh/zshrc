@@ -79,7 +79,7 @@ ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%} %{%G✭%}"
 PR_HBAR="─"
 
 # Finally, the prompt.
-PR_1='${PR_GREY}[${PR_CYAN}%(!.%SROOT%s.%n)${PR_GREY}@${PR_GREEN}%M${PR_GREY}:${PR_GREEN}%~${PR_GREY}]%{%G$terminfo[cuf1]%}'
+PR_1='${PR_GREY}[${PR_CYAN}%(!.%SROOT%s.%n)${PR_GREY}@${PR_YELLOW}%M${PR_GREY}:${PR_GREEN}%~${PR_GREY}]%{%G$terminfo[cuf1]%}'
 PR_2='${PR_BLUE}($(git_prompt_info)$(git_prompt_status)${PR_BLUE})%{%G$terminfo[cuf1]%}'
 PR_3='%(?..${PR_BLUE}(${PR_RED}%?↵${PR_BLUE}%)%{%G$terminfo[cuf1]%})'
 PR_4='${PR_BLUE}(${PR_YELLOW}$$${PR_GREY}/${PR_YELLOW}%j${PR_BLUE}%)%{%G$terminfo[cuf1]%}'
