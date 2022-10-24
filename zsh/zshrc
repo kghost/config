@@ -19,7 +19,7 @@ DISABLE_AUTO_TITLE="true"
 DISABLE_CORRECTION="true"
 
 # Uncomment following line if you want red dots to be displayed while waiting for completion
-#COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 HOST=$(hostname -f)
 
@@ -79,13 +79,13 @@ ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%} %{%G✭%}"
 PR_HBAR="─"
 
 # Finally, the prompt.
-PR_1='${PR_GREY}[${PR_CYAN}%(!.%SROOT%s.%n)${PR_GREY}@${PR_GREEN}%M${PR_GREY}:${PR_GREEN}%~${PR_GREY}]$terminfo[cuf1]'
-PR_2='${PR_BLUE}($(git_prompt_info)$(git_prompt_status)${PR_BLUE})$terminfo[cuf1]'
-PR_3='%(?..${PR_BLUE}(${PR_RED}%?↵${PR_BLUE}%)$terminfo[cuf1])'
-PR_4='${PR_BLUE}(${PR_YELLOW}$$${PR_GREY}/${PR_YELLOW}%j${PR_BLUE}%)$terminfo[cuf1]'
-PR_5='${PR_BLUE}(${PR_YELLOW}%D{%Y %b %d} ${PR_MAGENTA}%D{%H:%M:%S}${PR_BLUE})$terminfo[cuf1]'
+PR_1='${PR_GREY}[${PR_CYAN}%(!.%SROOT%s.%n)${PR_GREY}@${PR_GREEN}%M${PR_GREY}:${PR_GREEN}%~${PR_GREY}]%{%G$terminfo[cuf1]%}'
+PR_2='${PR_BLUE}($(git_prompt_info)$(git_prompt_status)${PR_BLUE})%{%G$terminfo[cuf1]%}'
+PR_3='%(?..${PR_BLUE}(${PR_RED}%?↵${PR_BLUE}%)%{%G$terminfo[cuf1]%})'
+PR_4='${PR_BLUE}(${PR_YELLOW}$$${PR_GREY}/${PR_YELLOW}%j${PR_BLUE}%)%{%G$terminfo[cuf1]%}'
+PR_5='${PR_BLUE}(${PR_YELLOW}%D{%Y %b %d} ${PR_MAGENTA}%D{%H:%M:%S}${PR_BLUE})%{%G$terminfo[cuf1]%}'
 
-PROMPT="${PR_CYAN}${(pl:${COLUMNS}::$PR_HBAR:)}$terminfo[cr]\
+PROMPT="%{${PR_CYAN}${(pl:${COLUMNS}::$PR_HBAR:)}$terminfo[cr]%}\
 ${PR_1}${PR_2}${PR_3}${PR_4}${PR_5}\
 
 %#${PR_NO_COLOUR} "
