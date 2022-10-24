@@ -33,7 +33,7 @@
 [submodule]
 	recurse = 0
 [oh-my-zsh]
-	hide-status = 1
-	hide-dirty = 1
+	hide-status = 0
+	hide-dirty = 0
 [url "git@github.com:"]
 	insteadOf = https://github.com/
