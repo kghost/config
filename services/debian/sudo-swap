@@ -1,10 +1,23 @@
 #! /bin/bash
 
-if ! grep --silent swap /etc/fstab ; then
-    fallocate -l 1G /swapfile
-    chmod 600 /swapfile
-    mkswap /swapfile
-    swapon /swapfile
-
-    echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
+if systemctl status swapfile.swap ; then
+    exit 0
 fi
+
+fallocate -l 1G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+
+tee /etc/systemd/system/swapfile.swap << EOF
+[Unit]
+Description=Turn on swap
+
+[Swap]
+What=/swapfile
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl enable swapfile.swap
+systemctl start swapfile.swap
