@@ -6,6 +6,13 @@ then
 	exit -1
 fi
 
+if dig "$CERTBOT_DOMAIN" | grep CNAME
+then
+else
+    echo "CNAME doesn't exists"
+    exit -1
+fi
+
 BASEDIR=$(dirname "$0")
 SERVER=ns.kghost.info
 
