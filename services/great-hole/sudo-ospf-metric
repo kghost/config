@@ -1,0 +1,10 @@
+#! /bin/sh
+
+sudo VTYSH_PAGER=/bin/cat vtysh -d ospfd -E <<INPUT
+config terminal
+  router ospf
+    default-information originate metric $1
+    exit
+  exit
+write
+INPUT
