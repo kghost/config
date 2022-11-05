@@ -2,14 +2,14 @@
 
 aptitude install shorewall
 
-cat | tee /etc/shorewall/interfaces <<EOF
+tee /etc/shorewall/interfaces <<EOF
 ###############################################################################
 #ZONE   INTERFACE       BROADCAST       OPTIONS
 net     eth0
 gfw     hole
 EOF
 
-cat | tee /etc/shorewall/policy <<EOF
+tee /etc/shorewall/policy <<EOF
 ###############################################################################
 #SOURCE DEST    POLICY          LOG     LIMIT:          CONNLIMIT:
 #                               LEVEL   BURST           MASK
@@ -19,14 +19,15 @@ gfw     all     ACCEPT
 all     all     REJECT
 EOF
 
-cat | tee /etc/shorewall/snat <<EOF
+tee /etc/shorewall/snat <<EOF
 ###################################################################################################################
 #ACTION         SOURCE          DEST            PROTO   PORT   IPSEC  MARK   USER    SWITCH  ORIGDEST   PROBABILITY
+MASQUERADE      192.168.0.0/16  eth0
 MASQUERADE      172.28.0.0/16   eth0
 MASQUERADE      172.31.0.0/16   eth0
 EOF
 
-cat | tee /etc/shorewall/zones <<EOF
+tee /etc/shorewall/zones <<EOF
 ###############################################################################
 #ZONE   TYPE            OPTIONS         IN                      OUT
 #                                       OPTIONS                 OPTIONS
@@ -38,7 +39,7 @@ EOF
 systemctl enable shorewall.service
 systemctl restart shorewall.service
 
-cat | tee /etc/sysctl.d/51-ip_forward.conf <<EOF
+tee /etc/sysctl.d/51-ip_forward.conf <<EOF
 net.ipv4.ip_forward=1
 EOF
 
