@@ -15,14 +15,32 @@ systemctl restart frr.service
 
 echo Configure ospfd
 
-sudo vtysh << EOF
+vtysh << EOF
 configure terminal
+
+ip router-id ${TUN_LOCAL_ADDRESS}
+
 router ospf
- ospf router-id ${TUN_LOCAL_ADDRESS}
+ no ospf router-id
  network 172.31.0.0/16 area 0.0.0.0
- default-information originate metric 20
+ default-information originate metric 50
+exit
+
+ip prefix-list INSTALL seq 100 permit 172.16.0.0/12 ge 12
+ip prefix-list INSTALL seq 101 permit 192.168.0.0/16 ge 16
+ip prefix-list INSTALL seq 200 deny any
+
+route-map INSTALL permit 100
+ match ip address prefix-list INSTALL
+exit
+
+ip protocol any route-map INSTALL
+
 end
+
 write
 EOF
+
+systemctl restart frr.service
 
 echo Done
