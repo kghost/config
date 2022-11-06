@@ -1,46 +1,73 @@
 #! /bin/sh
 
+#aptitude install frr
+
 TUN_LOCAL_ADDRESS=$(ip -4 addr show hole | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
 TUN_PEER_ADDRESS=$(ip -4 addr show hole | grep -oP '(?<=peer\s)\d+(\.\d+){3}')
 
 echo Using TUN address $TUN_LOCAL_ADDRESS peer $TUN_PEER_ADDRESS
 
-echo Enable frr ospfd
+echo Enable frr ospfd ospf6d
 
 sed -i 's/^ospfd=no$/ospfd=yes/g' /etc/frr/daemons
+sed -i 's/^ospf6d=no$/ospf6d=yes/g' /etc/frr/daemons
 
 echo Restarting frr
 
-systemctl restart frr.service
+#systemctl restart frr.service
 
 echo Configure ospfd
 
 vtysh << EOF
 configure terminal
-
+!
 ip router-id ${TUN_LOCAL_ADDRESS}
-
+!
+interface hole
+ ip ospf network point-to-multipoint
+ ip ospf area 0
+ ipv6 ospf6 area 0
+exit
+!
 router ospf
- no ospf router-id
- network 172.31.0.0/16 area 0.0.0.0
  default-information originate metric 50
 exit
-
+!
+router ospf6
+ default-information originate metric 50
+exit
+!
 ip prefix-list INSTALL seq 100 permit 172.16.0.0/12 ge 12
 ip prefix-list INSTALL seq 101 permit 192.168.0.0/16 ge 16
 ip prefix-list INSTALL seq 200 deny any
-
+!
+ipv6 prefix-list INSTALL seq 100 permit fdb9:e90f::/32 ge 32
+ipv6 prefix-list INSTALL seq 200 deny any
+!
 route-map INSTALL permit 100
  match ip address prefix-list INSTALL
 exit
-
+!
+route-map INSTALL-V6 permit 100
+ match ipv6 address prefix-list INSTALL
+exit
+!
 ip protocol any route-map INSTALL
-
+!
+ipv6 protocol any route-map INSTALL-V6
+!
 end
-
+!
 write
 EOF
 
-systemctl restart frr.service
+# Fix FRR bug that it doesn't save forwarding settings.
+tee -a /etc/frr/frr.conf << EOF
+ip forwarding
+ipv6 forwarding
+EOF
+
+sysctl -w net.ipv6.conf.eth0.accept_ra=2
+echo "PLEASE APPEND \"accept_ra 2\" TO eth0 CONFIGURE"
 
 echo Done

@@ -1,10 +1,20 @@
 #! /bin/sh
 
-sudo VTYSH_PAGER=/bin/cat vtysh -d ospfd -E <<INPUT
+sudo VTYSH_PAGER=/bin/cat vtysh -E <<INPUT
 config terminal
   router ospf
     default-information originate metric $1
-    exit
   exit
+  router ospf6
+    default-information originate metric $1
+  exit
+exit
 write
 INPUT
+
+# Fix FRR bug that it doesn't save forwarding settings.
+tee -a /etc/frr/frr.conf << EOF
+ip forwarding
+ipv6 forwarding
+EOF
+
