@@ -6,8 +6,11 @@ then
 	exit -1
 fi
 
-if dig "$CERTBOT_DOMAIN" | grep CNAME
+ACME="_acme-challenge"
+
+if dig "$ACME.$CERTBOT_DOMAIN" | grep CNAME
 then
+    :
 else
     echo "CNAME doesn't exists"
     exit -1
@@ -18,7 +21,6 @@ SERVER=ns.kghost.info
 
 DOMAIN=$(expr match "$CERTBOT_DOMAIN" '[^.]*\.\(.*\)')
 HOST=$(expr match "$CERTBOT_DOMAIN" '\([^.]*\)\..*')
-ACME="_acme-challenge"
 
 /usr/bin/nsupdate -k "${BASEDIR}/dyn_update" << EOM
 server ${SERVER}
