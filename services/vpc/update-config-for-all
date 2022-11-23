@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cat "$(dirname -- ${BASH_SOURCE[0]})/hosts" | while read i ; do
+    echo $i
+    ssh ${i}.kghost.info git -C '~/config' pull --verbose < /dev/null
+done

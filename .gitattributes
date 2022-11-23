@@ -3,3 +3,4 @@
 
 # Secrets
 services/certbot/dyn_update filter=git-crypt diff=git-crypt
+services/vpc/hosts filter=git-crypt diff=git-crypt
