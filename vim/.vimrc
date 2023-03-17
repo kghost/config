@@ -188,6 +188,9 @@ inoremap <C-L> <Esc>:tabnext<CR>
 inoremap <C-D> <Esc>:quit<CR>
 inoremap <C-T> <Esc>:tabnew 
 
+inoremap <A-Left> <C-O>b
+inoremap <A-Right> <C-O>w
+
 nnoremap <C-S> :tab split<CR>
 nnoremap <C-H> :tabprevious<CR>
 nnoremap <C-L> :tabnext<CR>
