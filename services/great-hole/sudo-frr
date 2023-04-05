@@ -14,7 +14,7 @@ sed -i 's/^ospf6d=no$/ospf6d=yes/g' /etc/frr/daemons
 
 echo Restarting frr
 
-#systemctl restart frr.service
+systemctl restart frr.service
 
 echo Configure ospfd
 
@@ -23,18 +23,18 @@ configure terminal
 !
 ip router-id ${TUN_LOCAL_ADDRESS}
 !
-interface hole
- ip ospf network point-to-multipoint
- ip ospf area 0
- ipv6 ospf6 area 0
-exit
-!
 router ospf
  default-information originate metric 50
 exit
 !
 router ospf6
  default-information originate metric 50
+exit
+!
+interface hole
+ ip ospf network point-to-multipoint
+ ip ospf area 0
+ ipv6 ospf6 area 0
 exit
 !
 ip prefix-list INSTALL seq 100 permit 172.16.0.0/12 ge 12

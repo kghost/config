@@ -37,6 +37,18 @@ iface hole inet static
         mtu 1420
 EOF
 
+tee /etc/systemd/network/20-hole.network <<EOF
+[Match]
+Name=hole
+
+[Link]
+MTUBytes=1420
+
+[Address]
+Address=${TUN_LOCAL_ADDRESS}/32
+Peer=${TUN_PEER_ADDRESS}/32
+EOF
+
 systemctl enable great-hole.service
 systemctl start great-hole.service
 systemctl status great-hole.service
