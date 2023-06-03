@@ -1,0 +1,76 @@
+#!/usr/sbin/nft -f
+
+#flush table inet proute
+
+table inet proute {
+    set v4vpn {
+        type ipv4_addr
+        flags interval
+    }
+
+    set v6vpn {
+        type ipv6_addr
+        flags interval
+    }
+
+    define interface_default = "wlan0"
+    define interface_vpn = "tun8"
+
+    define mark_pass = 0x10
+    define mark_vpn = 0x20
+
+    # Load mark from conntrack
+    chain PREROUTING_LOAD {
+        type filter hook prerouting priority -170; policy accept;
+        icmp type echo-reply meta nftrace set 1
+        ct state established meta mark set ct mark
+    }
+    chain OUTPUT_LOAD {
+        type route hook output priority -170; policy accept;
+        icmp type echo-request meta nftrace set 1
+        ct state established meta mark set ct mark
+    }
+
+    # Set mark by iif interface for incoming connections
+    chain PREROUTING_INCOMING {
+        type nat hook prerouting priority -160; policy accept;
+        ct state { established, related } accept
+        meta mark 0 iifname $interface_default meta mark set $mark_pass
+        meta mark 0 iifname $interface_vpn meta mark set $mark_vpn
+    }
+
+    # Rules for routing by setting marks
+    chain PREROUTING_RULES {
+        type nat hook prerouting priority -150; policy accept;
+        ct state { established, related } accept
+        meta mark 0 ip daddr @v4vpn meta mark set $mark_vpn
+        meta mark 0 ip6 daddr @v6vpn meta mark set $mark_vpn
+    }
+    chain OUTPUT_RULES {
+        type route hook output priority -150; policy accept;
+        ct state { established, related } accept
+        meta mark 0 ip daddr @v4vpn meta mark set $mark_vpn
+        meta mark 0 ip6 daddr @v6vpn meta mark set $mark_vpn
+    }
+
+    # Set mark by oif interface for outgoing connections
+    chain POSTROUTING_OUTGOING {
+        type nat hook postrouting priority 80; policy accept;
+        ct state { established, related } accept
+        meta mark 0 oifname $interface_default meta mark set $mark_pass
+        meta mark 0 oifname $interface_vpn meta mark set $mark_vpn
+    }
+
+    # Save mark to conntrack
+    chain POSTROUTING_SAVE {
+        type nat hook postrouting priority 90; policy accept;
+        ct state { established, related } accept
+        ct mark set mark
+    }
+
+    # Fix output source
+    chain OUTPUT_SNAT {
+        type nat hook postrouting priority srcnat; policy accept;
+        oifname "tun8" masquerade
+    }
+}
