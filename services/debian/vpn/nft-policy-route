@@ -71,6 +71,6 @@ table inet proute {
     # Fix output source
     chain OUTPUT_SNAT {
         type nat hook postrouting priority srcnat; policy accept;
-        oifname "tun8" masquerade
+        oifname $interface_vpn masquerade
     }
 }
