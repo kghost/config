@@ -41,7 +41,7 @@ table inet proute {
 
     # Rules for routing by setting marks
     chain PREROUTING_RULES {
-        type nat hook prerouting priority -150; policy accept;
+        type filter hook prerouting priority -150; policy accept;
         ct state { established, related } accept
         meta mark 0 ip daddr @v4vpn meta mark set $mark_vpn
         meta mark 0 ip6 daddr @v6vpn meta mark set $mark_vpn
