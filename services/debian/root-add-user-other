@@ -1,0 +1,7 @@
+#!/bin/bash
+
+useradd -d /home/${1} -g staff -m -s /bin/bash ${1}
+adduser ${1} sudo
+mkdir /home/${1}/.ssh
+echo "${2}" > /home/${1}/.ssh/authorized_keys
+chown --changes --recursive ${1}:staff /home/${1}
