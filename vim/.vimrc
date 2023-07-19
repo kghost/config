@@ -30,9 +30,9 @@ Plug 'knsh14/vim-github-link'
 Plug 'will133/vim-dirdiff'
 Plug 'ConradIrwin/vim-bracketed-paste'
 
-Plug 'vim-scripts/ingo-library'
+Plug 'inkarkat/vim-ingo-library'
+Plug 'inkarkat/vim-mark'
 Plug 'vim-scripts/SearchHighlighting'
-Plug '~/.vim/bundle/mark/'
 
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
