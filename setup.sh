@@ -41,7 +41,7 @@ ${LN} -sT ${PWD}/git/.gitconfig ~/.gitconfig
 ${LN} -sT ${PWD}/.tmux.conf ~/.tmux.conf
 ${LN} -sT ${PWD}/.asciidoc ~/.asciidoc
 
-if [ "$SHELL" = "/usr/bin/zsh" ] ; then
+if [ "$SHELL" = "/bin/zsh" ] ; then
     ${LN} -sT ${PWD}/zsh/zshrc ~/.zshrc
 fi
 
