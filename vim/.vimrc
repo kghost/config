@@ -47,11 +47,11 @@ Plug 'scrooloose/syntastic'
 
 " Denite
 if has('nvim')
-  Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
+	Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 else
-  Plug 'Shougo/denite.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+	Plug 'Shougo/denite.nvim'
+	Plug 'roxma/nvim-yarp'
+	Plug 'roxma/vim-hug-neovim-rpc'
 endif
 Plug 'kghost/denite-grep-git'
 Plug 'kghost/denite-filter-equal'
@@ -110,9 +110,9 @@ set autoindent
 set history=1000
 set cursorline
 if has("unnamedplus")
-  set clipboard=unnamedplus
+	set clipboard=unnamedplus
 elseif has("clipboard")
-  set clipboard=unnamed
+	set clipboard=unnamed
 endif
 
 set list listchars=tab:▸\ ,trail:·,nbsp:␣
@@ -211,10 +211,10 @@ nnoremap <F7> :vertical Gstatus<CR>
 
 autocmd FileType fugitive call s:fugitive_settings()
 function! s:fugitive_settings()
-       vertical resize 30
-       set nowrap
-       set winfixwidth
-       set nonumber
+	vertical resize 30
+	set nowrap
+	set winfixwidth
+	set nonumber
 endfunction
 
 nnoremap <F8> :TagbarToggle<CR>
@@ -237,10 +237,10 @@ else
 	cmap w!! w !sudo tee >/dev/null %
 endif
 
-set guioptions-=m  "remove menu bar
-set guioptions-=T  "remove toolbar
-set guioptions-=r  "remove right-hand scroll bar
-set guioptions-=L  "remove right-hand scroll bar
+set guioptions-=m "remove menu bar
+set guioptions-=T "remove toolbar
+set guioptions-=r "remove right-hand scroll bar
+set guioptions-=L "remove right-hand scroll bar
 
 set laststatus=2
 if has("statusline")
@@ -254,15 +254,15 @@ if has("statusline")
 	set statusline+=[%-8.8(%{getreg('\"')[:7]}%)]
 	set statusline+=%(\ %{fugitive#statusline()}%)
 	set statusline+=\ (%04B)
-    " flags
+	" flags
 	set statusline+=\ [
-    set statusline+=%Y
+	set statusline+=%Y
 	set statusline+=%{&fenc!='utf-8'?&fenc:''}
-    set statusline+=%{&fileformat=='unix'?'':(','.&fileformat)}
-    set statusline+=%{&bomb?',BOMB':''}
+	set statusline+=%{&fileformat=='unix'?'':(','.&fileformat)}
+	set statusline+=%{&bomb?',BOMB':''}
 	set statusline+=%{(&binary?',BIN':'')}
 	set statusline+=%{(&endofline?'':',NoEOL')}
-    set statusline+=]
+	set statusline+=]
 	" syntastic
 	set statusline+=%(\ %{SyntasticStatuslineFlag()}%)
 	set statusline+=\ %l/%L,%c%V
@@ -288,7 +288,7 @@ set cinoptions=+0,j1,(1s,t0,N-s,g0,h4
 " Auto adjust quickfix/location-list window size
 autocmd FileType qf call s:AdjustWindowHeight(3, 15)
 function s:AdjustWindowHeight(minheight, maxheight)
-  exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+	exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
 
 autocmd FileType ruby setl expandtab shiftwidth=2
