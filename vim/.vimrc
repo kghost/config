@@ -115,7 +115,7 @@ elseif has("clipboard")
   set clipboard=unnamed
 endif
 
-set list listchars=tab:▸\ ,trail:·
+set list listchars=tab:▸\ ,trail:·,nbsp:␣
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
@@ -254,7 +254,15 @@ if has("statusline")
 	set statusline+=[%-8.8(%{getreg('\"')[:7]}%)]
 	set statusline+=%(\ %{fugitive#statusline()}%)
 	set statusline+=\ (%04B)
-	set statusline+=%(\ [%{&fenc!='utf-8'?&fenc:''}%{&bomb?',B':''}%{&ff=='unix'?'':(','.&ff)}%Y]%)
+    " flags
+	set statusline+=\ [
+    set statusline+=%Y
+	set statusline+=%{&fenc!='utf-8'?&fenc:''}
+    set statusline+=%{&fileformat=='unix'?'':(','.&fileformat)}
+    set statusline+=%{&bomb?',BOMB':''}
+	set statusline+=%{(&binary?',BIN':'')}
+	set statusline+=%{(&endofline?'':',NoEOL')}
+    set statusline+=]
 	" syntastic
 	set statusline+=%(\ %{SyntasticStatuslineFlag()}%)
 	set statusline+=\ %l/%L,%c%V
