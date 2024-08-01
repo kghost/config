@@ -13,6 +13,8 @@ Plug 'jnwhiteh/vim-golang'
 Plug 'vim-scripts/py-coverage'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
+Plug 'pedrohdz/vim-yaml-folds'
+
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'guns/xterm-color-table.vim'
