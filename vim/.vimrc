@@ -1,5 +1,5 @@
 colorscheme default
-set background=light
+set background=dark
 
 set nocompatible
 filetype off
@@ -61,6 +61,7 @@ Plug 'kghost/denite-filter-equal'
 Plug 'embear/vim-localvimrc'
 
 Plug 'MattesGroeger/vim-bookmarks'
+Plug 'preservim/vim-indent-guides'
 
 call plug#end()
 
@@ -136,6 +137,8 @@ set splitright " Unite split preview to the right
 set ttimeoutlen=0 " exit visual/insert mode immediately
 set updatetime=500
 set matchpairs+=<:>
+
+let g:indent_guides_enable_on_vim_startup = 1
 
 let g:snipMate = { 'snippet_version' : 1 }
 
@@ -310,7 +313,7 @@ if $TERM == "xterm" || $TERM == "screen"
 	set t_Co=256
 endif
 
-highlight Search ctermbg=227
+highlight Search ctermbg=DarkGreen
 
 highlight clear SpellBad
 highlight clear SpellCap
@@ -321,13 +324,13 @@ highlight SpellRare  cterm=underline gui=undercurl guisp=Magenta
 highlight SpellCap   cterm=underline gui=undercurl guisp=Blue
 highlight SpellLocal cterm=underline gui=undercurl guisp=DarkCyan
 
-highlight ColorColumn ctermbg=lightgrey
+highlight ColorColumn ctermbg=DarkGrey
 
 highlight DiffAdd    ctermbg=224
 highlight DiffDelete ctermbg=224
 highlight DiffChange ctermbg=224
 highlight DiffText   ctermbg=218
 
-highlight LineNr ctermbg=254
-highlight CursorLineNr cterm=undercurl ctermbg=249 gui=undercurl
+highlight LineNr ctermbg=DarkGray
+highlight CursorLineNr cterm=undercurl ctermbg=DarkBlue gui=undercurl
 highlight PyCoverageMissed ctermbg=227
