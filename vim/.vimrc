@@ -1,3 +1,5 @@
+runtime! defaults
+
 colorscheme default
 set background=dark
 
@@ -6,8 +8,6 @@ filetype off
 
 call plug#begin('~/.vim/plugged')
 " langs
-Plug 'sheerun/vim-polyglot'
-
 Plug 'othree/xml.vim'
 Plug 'jnwhiteh/vim-golang'
 Plug 'vim-scripts/py-coverage'
