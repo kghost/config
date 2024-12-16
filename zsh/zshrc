@@ -86,10 +86,10 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # Finally, the prompt.
 PR_BARS='%{${PR_CYAN}${(pl:${COLUMNS}::$PR_HBAR:)}$terminfo[cr]%}'
-PR_1='${PR_GREY}[${PR_CYAN}%(!.%SROOT%s.%n)${PR_GREY}@${PR_YELLOW}%M${PR_GREY}:${PR_GREEN}%~${PR_GREY}]'
+PR_1='${PR_RED}[${PR_CYAN}%(!.%SROOT%s.%n)${PR_RED}@${PR_YELLOW}%M${PR_RED}:${PR_GREEN}%~${PR_RED}]'
 PR_2='%{%G$terminfo[cuf1]%}${PR_BLUE}($(git_prompt_info)$(git_prompt_status)${PR_BLUE})'
 PR_3='%(?..%{%G$terminfo[cuf1]%}${PR_BLUE}(${PR_RED}%?↵${PR_BLUE}%))'
-PR_4='%{%G$terminfo[cuf1]%}${PR_BLUE}(${PR_YELLOW}$$${PR_GREY}/${PR_YELLOW}%j${PR_BLUE}%)'
+PR_4='%{%G$terminfo[cuf1]%}${PR_BLUE}(${PR_YELLOW}$$${PR_RED}/${PR_YELLOW}%j${PR_BLUE}%)'
 PR_5='%{%G$terminfo[cuf1]%}${PR_BLUE}(${PR_YELLOW}%D{%Y %b %d} ${PR_MAGENTA}%D{%H:%M:%S}${PR_BLUE})'
 PR_6='${VIRTUAL_ENV:+%{%G$terminfo[cuf1]%\}${PR_BLUE}(${PR_RED}venv ${PR_YELLOW}${VIRTUAL_ENV}${PR_BLUE})}'
 
