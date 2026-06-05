@@ -134,7 +134,7 @@ set scrolloff=3
 set showcmd
 set diffopt+=vertical
 set splitright " Unite split preview to the right
-set ttimeoutlen=0 " exit visual/insert mode immediately
+"set ttimeoutlen=0 " exit visual/insert mode immediately
 set updatetime=500
 set matchpairs+=<:>
 
